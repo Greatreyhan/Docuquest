@@ -63,8 +63,6 @@ def init_huggingface(API_KEY):
 
     return embeddings
 
-# embedding = init_huggingface("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")
-
 ######################## Setting Up Chroma as our Vector Database  ################################
 def init_chroma(chunks,embedding):
     vectordb=Chroma.from_documents(chunks,embedding=embedding, persist_directory='./data')
