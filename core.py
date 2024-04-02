@@ -63,6 +63,8 @@ def init_huggingface(API_KEY):
 
     return embeddings
 
+# embedding = init_huggingface("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")
+
 ######################## Setting Up Chroma as our Vector Database  ################################
 def init_chroma(chunks,embedding):
     vectordb=Chroma.from_documents(chunks,embedding=embedding, persist_directory='./data')
@@ -111,7 +113,7 @@ def setup_model(dbvector):
 ######################## Creating a Conversation Retrieval QA Chain ################################
 
 
-def start_conversation(model):
+def start_conversation_prompt(model):
     print('---------------------------------------------------------------------------------')
     print('-----------Start The Conversation With Document Based Knowledge------------------')
     print('---------------------------------------------------------------------------------')
@@ -127,4 +129,9 @@ def start_conversation(model):
         print(f"Answer: " + result["answer"])
         return result
 
+def start_conversation(model, question):
+    print("Question :", question)
+    result = model({"question":question})
+    return result
 
+# start_conversation(pdf_model)

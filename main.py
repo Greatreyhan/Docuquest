@@ -60,11 +60,17 @@ if uploaded_file:
 if uploaded_file and question and not openai_api_key:
     st.info("Please add your OPENAI API key to continue.")
 
-if start_session and start_answer and openai_api_key:
+if start_session and openai_api_key:
     embedding = core.init_huggingface(openai_api_key)
     document_df = core.input_document()
     chunks_df = core.split_document(document_df)
     db_vector = core.init_chroma(chunks_df, embedding)
-    model = core.setup_model(db_vector)
-    result = core.start_conversation(model)
+    model_global = core.setup_model(db_vector)
+    st.session_state['pdf_model'] = model_global
+    print("Ready for conversation")
+
+if start_answer:
+    model = st.session_state['pdf_model']
+    result = core.start_conversation(model,question)
     st.write(result["answer"])
+            
